@@ -20,7 +20,12 @@ import Derivadas from './pages/calculo/Derivadas'
 import Integrales from './pages/calculo/Integrales'
 import Limites from './pages/calculo/Limites'
 import Graficas from './pages/graficas/Graficas'
-import Fisica from './pages/fisica/Fisica'
+// Importaciones de páginas de física
+import MRUA from './pages/fisica/MRUA'
+import CaidaLibre from './pages/fisica/CaidaLibre'
+import Proyectil from './pages/fisica/Proyectil'
+import SegundaLey from './pages/fisica/SegundaLey'
+import TerceraLey from './pages/fisica/TerceraLey'
 
 function App() {
   const config = {
@@ -70,7 +75,11 @@ function App() {
           <Route path="graficas" element={<Graficas />} />
           
           {/* Rutas de Física */}
-          <Route path="fisica" element={<Fisica />} />
+          <Route path="mrua" element={<MRUA />} />
+          <Route path="caida-libre" element={<CaidaLibre />} />
+          <Route path="proyectil" element={<Proyectil />} />
+          <Route path="segunda-ley" element={<SegundaLey />} />
+          <Route path="tercera-ley" element={<TerceraLey />} />
           
           {/* Ruta 404 */}
           <Route path="*" element={<NotFound />} />

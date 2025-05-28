@@ -154,9 +154,7 @@ const Sidebar = () => {
             <Link to="/graficas" className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100">
               <span className="flex-1 whitespace-nowrap font-semibold">📈 Funciones gráficas</span>
             </Link>
-          </li>
-
-          {/* Física */}
+          </li>          {/* Física */}
           <li>
             <button
               onClick={() => toggleCategory('fisica')}
@@ -168,30 +166,26 @@ const Sidebar = () => {
               </svg>
             </button>
             {openCategories.fisica && (
-              <ul className="py-2 space-y-2">
-                <li>
-                  <Link to="/fisica?tipo=mrua" className="flex items-center p-2 pl-11 w-full text-sm font-normal text-gray-900 rounded-lg hover:bg-gray-100">
+              <ul className="py-2 space-y-2">                <li>
+                  <Link to="/mrua" className="flex items-center p-2 pl-11 w-full text-sm font-normal text-gray-900 rounded-lg hover:bg-gray-100">
                     📌 MRUA
                   </Link>
                 </li>
                 <li>
-                  <Link to="/fisica?tipo=caida-libre" className="flex items-center p-2 pl-11 w-full text-sm font-normal text-gray-900 rounded-lg hover:bg-gray-100">
+                  <Link to="/caida-libre" className="flex items-center p-2 pl-11 w-full text-sm font-normal text-gray-900 rounded-lg hover:bg-gray-100">
                     📌 Caída libre
                   </Link>
-                </li>
-                <li>
-                  <Link to="/fisica?tipo=proyectil" className="flex items-center p-2 pl-11 w-full text-sm font-normal text-gray-900 rounded-lg hover:bg-gray-100">
+                </li>                <li>
+                  <Link to="/proyectil" className="flex items-center p-2 pl-11 w-full text-sm font-normal text-gray-900 rounded-lg hover:bg-gray-100">
                     📌 Proyectil
                   </Link>
-                </li>
-                <li>
-                  <Link to="/fisica?tipo=segunda-ley" className="flex items-center p-2 pl-11 w-full text-sm font-normal text-gray-900 rounded-lg hover:bg-gray-100">
-                    📌 Segunda ley Newton
+                </li>                <li>
+                  <Link to="/segunda-ley" className="flex items-center p-2 pl-11 w-full text-sm font-normal text-gray-900 rounded-lg hover:bg-gray-100">
+                    📌 Segunda Ley Newton
                   </Link>
-                </li>
-                <li>
-                  <Link to="/fisica?tipo=tercera-ley" className="flex items-center p-2 pl-11 w-full text-sm font-normal text-gray-900 rounded-lg hover:bg-gray-100">
-                    📌 Tercera ley Newton
+                </li>                <li>
+                  <Link to="/tercera-ley" className="flex items-center p-2 pl-11 w-full text-sm font-normal text-gray-900 rounded-lg hover:bg-gray-100">
+                    📌 Tercera Ley Newton
                   </Link>
                 </li>
               </ul>

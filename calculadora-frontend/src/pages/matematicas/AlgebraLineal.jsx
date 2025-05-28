@@ -3,6 +3,8 @@ import GaussSimple from '../../components/metodos-numericos/algebra-lineal/Gauss
 import GaussJordan from '../../components/metodos-numericos/algebra-lineal/GaussJordan'
 import Inversa from '../../components/metodos-numericos/algebra-lineal/Inversa'
 import Cramer from '../../components/metodos-numericos/algebra-lineal/Cramer'
+import ResolverEcuacion from '../../components/metodos-numericos/algebra-lineal/ResolverEcuacion'
+import ResolverInecuacion from '../../components/metodos-numericos/algebra-lineal/ResolverInecuacion'
 
 const AlgebraLineal = () => {
   const [searchParams] = useSearchParams()
@@ -17,6 +19,10 @@ const AlgebraLineal = () => {
         return <Inversa />
       case 'cramer':
         return <Cramer />
+      case 'ecuacion':
+        return <ResolverEcuacion />
+      case 'inecuacion':
+        return <ResolverInecuacion />
       default:
         return <GaussSimple />
     }
@@ -24,12 +30,13 @@ const AlgebraLineal = () => {
   
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-6">Álgebra Lineal</h1>
-      <div className="mb-6 flex flex-wrap gap-2">
+      <h1 className="text-3xl font-bold mb-6">Álgebra Lineal</h1>      <div className="mb-6 flex flex-wrap gap-2">
         <MethodButton name="Gauss Simple" method="gauss-simple" current={metodo} />
         <MethodButton name="Gauss-Jordan" method="gauss-jordan" current={metodo} />
         <MethodButton name="Método de la Inversa" method="inversa" current={metodo} />
         <MethodButton name="Método de Cramer" method="cramer" current={metodo} />
+        <MethodButton name="Resolver Ecuación" method="ecuacion" current={metodo} />
+        <MethodButton name="Resolver Inecuación" method="inecuacion" current={metodo} />
       </div>
       
       {renderCalculator()}
