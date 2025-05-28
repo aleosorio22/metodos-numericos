@@ -283,66 +283,99 @@ const calcularPerimetro = async (req, res) => {
 
 const calcularDerivada = async (req, res) => {
   const { f, variable, orden } = req.body;
-
-  if (
-    typeof f !== 'string' ||
-    typeof variable !== 'string' ||
-    typeof orden !== 'number'
-  ) {
-    return res.status(400).json({ error: 'Datos inválidos' });
+  
+  // Validación más robusta de los parámetros
+  if (typeof f !== 'string' || f.trim() === '') {
+    return res.status(400).json({ error: 'Debe proporcionar una función válida' });
   }
-
-  try {
-    const resultado = await ejecutarMatlab('derivada', [f, variable, orden]);
-    return res.json({ resultado });
+  
+  if (typeof variable !== 'string' || variable.trim() === '') {
+    return res.status(400).json({ error: 'Debe proporcionar una variable válida' });
+  }
+  
+  // Asegurarse que el orden es un número, y si no, convertirlo
+  const ordenNum = Number(orden);
+  
+  if (isNaN(ordenNum) || !Number.isInteger(ordenNum) || ordenNum < 1) {
+    return res.status(400).json({ error: 'El orden debe ser un entero positivo' });
+  }
+    try {
+    // Enviar ordenNum asegurando que es un número
+    const resultado = await ejecutarMatlab('derivada', [f, variable, ordenNum]);
+    res.json({ resultado });
   } catch (err) {
-    console.error('❌ Error en derivada:', err.message);
-    return res.status(500).json({ error: 'Error al ejecutar función de derivada' });
+    console.error('Error al calcular la derivada:', err);
+    res.status(500).json({ error: 'Error al calcular la derivada' });
   }
 };
 
 const calcularLimite = async (req, res) => {
   const { f, variable, punto, direccion } = req.body;
-
-  if (
-    typeof f !== 'string' ||
-    typeof variable !== 'string' ||
-    typeof punto !== 'number' ||
-    typeof direccion !== 'string'
-  ) {
-    return res.status(400).json({ error: 'Datos inválidos' });
+  
+  // Validación más robusta de los parámetros
+  if (typeof f !== 'string' || f.trim() === '') {
+    return res.status(400).json({ error: 'Debe proporcionar una función válida' });
   }
-
+  
+  if (typeof variable !== 'string' || variable.trim() === '') {
+    return res.status(400).json({ error: 'Debe proporcionar una variable válida' });
+  }
+  
+  // Asegurarse que el punto es un número, y si no, convertirlo
+  const puntoNum = Number(punto);
+  
+  if (isNaN(puntoNum)) {
+    return res.status(400).json({ error: 'El punto debe ser un número válido' });
+  }
+  
+  if (typeof direccion !== 'string' || !['left', 'right', 'both'].includes(direccion)) {
+    return res.status(400).json({ error: 'La dirección debe ser "left", "right" o "both"' });
+  }
   try {
-    const resultado = await ejecutarMatlab('limite', [f, variable, punto, direccion]);
-    return res.json({ resultado });
+    // Enviar puntoNum asegurando que es un número
+    const resultado = await ejecutarMatlab('limite', [f, variable, puntoNum, direccion]);
+    res.json({ resultado });
   } catch (err) {
-    console.error('❌ Error en límite:', err.message);
-    return res.status(500).json({ error: 'Error al ejecutar función de límite' });
+    console.error('Error al calcular el límite:', err);
+    res.status(500).json({ error: 'Error al calcular el límite' });
   }
 };
 
 const calcularIntegralGeneral = async (req, res) => {
   const { f, variable, tipo, a, b } = req.body;
 
+  // Validaciones básicas
   if (
     typeof f !== 'string' ||
     typeof variable !== 'string' ||
-    typeof tipo !== 'string'
+    typeof tipo !== 'string' ||
+    !['indefinida', 'integral', 'area', 'volumen'].includes(tipo)
   ) {
-    return res.status(400).json({ error: 'Datos inválidos' });
+    return res.status(400).json({
+      error: 'Parámetros inválidos. Debe proporcionar una función (string), variable (string) y tipo válido.'
+    });
   }
 
-  const args = ['indefinida'].includes(tipo.toLowerCase())
-    ? [f, variable, 0, 0, tipo] // se ignoran a y b en MATLAB
-    : [f, variable, a, b, tipo];
+  // Si es integral definida, área o volumen, necesitamos límites
+  if (tipo !== 'indefinida' && (typeof a !== 'number' || typeof b !== 'number')) {
+    return res.status(400).json({
+      error: 'Para integrales definidas, área o volumen, debe proporcionar límites a y b como números.'
+    });
+  }
 
   try {
-    const resultado = await ejecutarMatlab('integral_general', args);
-    return res.json({ resultado });
-  } catch (err) {
-    console.error('❌ Error en integral:', err.message);
-    return res.status(500).json({ error: 'Error al ejecutar cálculo de integral' });
+    let params = [];
+    if (tipo === 'indefinida') {
+      params = [funcion, variable, 0, 0, tipo]; // Los límites son ignorados para indefinidas
+    } else {
+      params = [funcion, variable, a, b, tipo];
+    }
+    
+    const resultado = await ejecutarMatlab('integral_general', params);
+    res.json({ resultado });
+  } catch (err){
+    console.error('Error al calcular la integral:', err);
+    res.status(500).json({ error: 'Error al calcular la integral' });
   }
 };
 
